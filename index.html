@@ -1,113 +1,951 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الخطة الدراسية المكثفة - طلخا 2026</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #f4f7f6;
-            margin: 0;
-            padding: 20px;
-            color: #333;
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-        }
-        h1 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 30px;
-        }
-        .day-card {
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-            overflow: hidden;
-            border: 1px solid #e0e0e0;
-        }
-        .day-header {
-            background: #3498db;
-            color: #fff;
-            padding: 15px 20px;
-            font-size: 1.25rem;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-        }
-        .section-title {
-            background: #ecf0f1;
-            padding: 10px 20px;
-            font-weight: bold;
-            color: #2980b9;
-            border-bottom: 1px solid #ddd;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 12px 20px;
-            text-align: right;
-            border-bottom: 1px solid #eee;
-        }
-        th {
-            background: #f9f9f9;
-            color: #7f8c8d;
-            font-size: 0.9rem;
-        }
-        .prayer-row {
-            background: #fff9e6;
-        }
-        .checkbox-cell {
-            width: 50px;
-            text-align: center;
-        }
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-        .time-cell {
-            width: 180px;
-            color: #e67e22;
-            font-weight: bold;
-        }
-        .task-done {
-            text-decoration: line-through;
-            color: #bdc3c7;
-        }
-        @media print {
-            body { background: #fff; padding: 0; }
-            .day-card { box-shadow: none; border: 1px solid #000; page-break-after: always; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خطة الإنقاذ الدراسية — الأول على الجمهورية</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --surface: #111318;
+    --surface2: #181c24;
+    --surface3: #1e2330;
+    --border: rgba(255,255,255,0.07);
+    --border-bright: rgba(255,255,255,0.15);
+    --gold: #f5c842;
+    --gold-dim: rgba(245,200,66,0.12);
+    --gold-glow: rgba(245,200,66,0.3);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.12);
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,0.12);
+    --red: #ef4444;
+    --red-dim: rgba(239,68,68,0.12);
+    --purple: #a855f7;
+    --purple-dim: rgba(168,85,247,0.12);
+    --orange: #f97316;
+    --orange-dim: rgba(249,115,22,0.12);
+    --teal: #14b8a6;
+    --teal-dim: rgba(20,184,166,0.12);
+    --text: #e8eaf0;
+    --text-muted: #7a8099;
+    --text-dim: #4a5068;
+    --prayer-bg: rgba(245,200,66,0.06);
+    --prayer-border: rgba(245,200,66,0.35);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Cairo', 'Tajawal', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── HEADER ── */
+  .hero {
+    position: relative;
+    padding: 60px 24px 40px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -100px; left: 50%;
+    transform: translateX(-50%);
+    width: 700px; height: 400px;
+    background: radial-gradient(ellipse, rgba(245,200,66,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold-dim);
+    border: 1px solid rgba(245,200,66,0.25);
+    border-radius: 100px;
+    padding: 6px 18px;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    animation: fadeDown 0.6s ease;
+  }
+
+  .hero h1 {
+    font-family: 'Cairo', sans-serif;
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 900;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #fff 30%, var(--gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 12px;
+    animation: fadeDown 0.7s ease;
+  }
+
+  .hero-verse {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 32px;
+    animation: fadeDown 0.8s ease;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    max-width: 680px;
+    margin: 0 auto 48px;
+    animation: fadeDown 0.9s ease;
+  }
+
+  .progress-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .progress-label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+  .progress-count { font-size: 22px; font-weight: 900; color: var(--gold); }
+
+  .progress-track {
+    height: 8px;
+    background: var(--surface2);
+    border-radius: 100px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), #ff9f1a);
+    border-radius: 100px;
+    width: 0%;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 0 12px var(--gold-glow);
+  }
+
+  /* ── PHASE LABEL ── */
+  .phase-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    border-radius: var(--radius);
+    margin: 0 auto 12px;
+    max-width: 900px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+  }
+
+  .phase-label.phase-1 { background: var(--blue-dim); border: 1px solid rgba(59,130,246,0.2); color: #93c5fd; }
+  .phase-label.phase-2 { background: var(--orange-dim); border: 1px solid rgba(249,115,22,0.2); color: #fdba74; }
+  .phase-label.phase-3 { background: var(--purple-dim); border: 1px solid rgba(168,85,247,0.2); color: #d8b4fe; }
+
+  .phase-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .phase-1 .phase-dot { background: var(--blue); }
+  .phase-2 .phase-dot { background: var(--orange); }
+  .phase-3 .phase-dot { background: var(--purple); }
+
+  /* ── MAIN LAYOUT ── */
+  .container { max-width: 900px; margin: 0 auto; padding: 0 16px 80px; }
+
+  /* ── DAY CARD ── */
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .day-card:hover { border-color: var(--border-bright); box-shadow: 0 4px 32px rgba(0,0,0,0.3); }
+  .day-card.done { border-color: rgba(34,197,94,0.3); }
+  .day-card.done .day-header { background: rgba(34,197,94,0.05); }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .day-header:hover { background: var(--surface2); }
+
+  .day-header-right {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .day-num {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+
+  .day-info { display: flex; flex-direction: column; gap: 2px; }
+
+  .day-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .day-date {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .day-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .day-progress-mini {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .day-done-badge {
+    display: none;
+    align-items: center;
+    gap: 5px;
+    background: var(--green-dim);
+    border: 1px solid rgba(34,197,94,0.25);
+    color: var(--green);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .day-card.done .day-done-badge { display: flex; }
+
+  .chevron {
+    width: 20px; height: 20px;
+    color: var(--text-dim);
+    transition: transform 0.3s;
+  }
+
+  .day-card.open .chevron { transform: rotate(90deg); }
+
+  /* ── DAY BODY ── */
+  .day-body {
+    display: none;
+    padding: 0 20px 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .day-card.open .day-body { display: block; }
+
+  /* ── PRAYER TIMES BAR ── */
+  .prayers-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 12px 0 16px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .prayer-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--prayer-bg);
+    border: 1px solid var(--prayer-border);
+    border-radius: 100px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  .prayer-chip-name { color: rgba(245,200,66,0.6); font-weight: 500; }
+
+  /* ── SESSION ROW ── */
+  .session {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .session:hover { background: var(--surface2); }
+  .session.checked { opacity: 0.55; }
+  .session.checked .session-title { text-decoration: line-through; }
+  .session.is-prayer {
+    background: var(--prayer-bg);
+    border: 1px dashed var(--prayer-border);
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .session.is-prayer:hover { background: var(--prayer-bg); }
+
+  /* checkbox */
+  .check-box {
+    width: 22px; height: 22px;
+    border-radius: 6px;
+    border: 2px solid var(--border-bright);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: 2px;
+  }
+
+  .session.checked .check-box {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .check-icon { display: none; }
+  .session.checked .check-icon { display: block; }
+
+  .session.is-prayer .check-box { display: none; }
+
+  .prayer-icon {
+    display: none;
+    width: 22px; height: 22px;
+    flex-shrink: 0;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+
+  .session.is-prayer .prayer-icon { display: flex; align-items: center; justify-content: center; font-size: 15px; }
+
+  /* session content */
+  .session-content { flex: 1; }
+
+  .session-time {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 600;
+    margin-bottom: 3px;
+    font-family: 'Cairo', monospace;
+    direction: ltr;
+    text-align: right;
+  }
+
+  .session.is-prayer .session-time { color: rgba(245,200,66,0.5); }
+
+  .session-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .session.is-prayer .session-title { color: var(--gold); }
+
+  .session-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* subject tag */
+  .subj-tag {
+    display: inline-block;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-top: 5px;
+    letter-spacing: 0.3px;
+  }
+
+  .tag-physics   { background: rgba(59,130,246,0.15); color: #93c5fd; }
+  .tag-chemistry { background: rgba(249,115,22,0.15); color: #fdba74; }
+  .tag-bio       { background: rgba(34,197,94,0.15); color: #86efac; }
+  .tag-arabic    { background: rgba(168,85,247,0.15); color: #d8b4fe; }
+  .tag-german    { background: rgba(245,200,66,0.15); color: var(--gold); }
+  .tag-english   { background: rgba(20,184,166,0.15); color: #5eead4; }
+  .tag-review    { background: rgba(255,255,255,0.08); color: #94a3b8; }
+  .tag-religion  { background: rgba(236,72,153,0.15); color: #f9a8d4; }
+  .tag-prayer    { background: var(--prayer-bg); color: var(--gold); }
+
+  /* ── GOLDEN DAYS BLOCK ── */
+  .golden-block {
+    background: linear-gradient(135deg, rgba(245,200,66,0.06), rgba(255,159,26,0.04));
+    border: 1px solid rgba(245,200,66,0.2);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .golden-block h3 {
+    color: var(--gold);
+    font-size: 15px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+
+  .golden-block p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER CTA ── */
+  .final-night {
+    background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(59,130,246,0.08));
+    border: 1px solid rgba(168,85,247,0.25);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .final-night h2 { font-size: 20px; font-weight: 900; color: #c4b5fd; margin-bottom: 8px; }
+  .final-night p { font-size: 14px; color: var(--text-muted); }
+
+  /* ── RESET BTN ── */
+  .reset-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: var(--surface2);
+    border: 1px solid var(--border-bright);
+    color: var(--text-muted);
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    transition: all 0.2s;
+    z-index: 100;
+  }
+
+  .reset-btn:hover { background: var(--red-dim); border-color: rgba(239,68,68,0.3); color: #fca5a5; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 0 0 var(--gold-glow); }
+    50% { box-shadow: 0 0 0 6px transparent; }
+  }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 3px; }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 600px) {
+    .prayers-bar { gap: 6px; }
+    .prayer-chip { font-size: 11px; padding: 4px 10px; }
+    .session-title { font-size: 13px; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>📅 الخطة الدراسية المكثفة (طلخا 2026)</h1>
-        <p style="text-align: center; color: #7f8c8d;">تم مراعاة فترات الصلاة (30 دقيقة قبل وبعد الأذان)</p>
-        
-        <div class="day-card"><div class="day-header"><span>🗓️ 2026-05-29</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:52</td><td>12:22 - 13:22</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:54</td><td>19:24 - 20:24</td></tr><tr class="prayer-row"><td>Isha</td><td>21:27</td><td>20:57 - 21:57</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>فيزياء (الفصل الثاني): قراءة قوانين أجهزة القياس وحل 40 سؤالاً</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:25 PM - 07:55 PM</td><td>استكمال أسئلة الفيزياء (تصحيح الأخطاء)</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>كيمياء (الباب الأول ونصف الثاني): قراءة سريعة وبداية كواشف الباب الثاني</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-05-30</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:52</td><td>12:22 - 13:22</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:54</td><td>19:24 - 20:24</td></tr><tr class="prayer-row"><td>Isha</td><td>21:27</td><td>20:57 - 21:57</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>فيزياء (الفصل الثالث): قراءة قوانين الدينامو والمحول والحل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>كيمياء (باقي الباب الثاني): استكمال مخطط الألوان والرواسب وحل 20 مسألة</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>أحياء: قراءة سريعة لـ (المناعة) + حل أسئلة الربط</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>عربي (نحو): قراءة سريعة لـ (النواسخ والمنصوبات) وحل 20 جملة</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-05-31</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:52</td><td>12:22 - 13:22</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:54</td><td>19:24 - 20:24</td></tr><tr class="prayer-row"><td>Isha</td><td>21:27</td><td>20:57 - 21:57</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>فيزياء (الفصل الرابع): دوائر التيار المتردد (قراءة + حل)</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>كيمياء (الباب الثالث): الاتزان الكيميائي ومسائل الـ pH</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>أحياء: قراءة (الـ RNA والـ DNA) بتركيز + حل مباشر</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>عربي (نحو): قراءة قواعد الأساليب المتبقية وحل شامل نحو</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-01</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:52</td><td>12:22 - 13:22</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:54</td><td>19:24 - 20:24</td></tr><tr class="prayer-row"><td>Isha</td><td>21:27</td><td>20:57 - 21:57</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 11:25 AM</td><td>كيمياء (الباب الرابع): الكهربية (الخلايا وقوانين فاراداي) قراءة وحل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>مراجعة سريعة لأخطاء الفيزياء التي واجهتك الأيام الماضية</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>عربي: قراءة الأدب (المدارس الشعرية)</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-02</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:52</td><td>12:22 - 13:22</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:54</td><td>19:24 - 20:24</td></tr><tr class="prayer-row"><td>Isha</td><td>21:27</td><td>20:57 - 21:57</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 11:25 AM</td><td>ألماني: مشاهدة ملخصات A1 وحفظ الكلمات وتدوين القواعد</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>حل 3 امتحانات ألماني سابقة</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>إنجليزي: حل قطع فهم ومراجعة سريعة</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-03</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:52</td><td>12:22 - 13:22</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:54</td><td>19:24 - 20:24</td></tr><tr class="prayer-row"><td>Isha</td><td>21:27</td><td>20:57 - 21:57</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان فيزياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان كيمياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان ألماني شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-04</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:52</td><td>12:22 - 13:22</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:54</td><td>19:24 - 20:24</td></tr><tr class="prayer-row"><td>Isha</td><td>21:28</td><td>20:58 - 21:58</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان أحياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان عربي شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان إنجليزي شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-05</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:53</td><td>12:23 - 13:23</td></tr><tr class="prayer-row"><td>Asr</td><td>16:31</td><td>16:01 - 17:01</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:55</td><td>19:25 - 20:25</td></tr><tr class="prayer-row"><td>Isha</td><td>21:28</td><td>20:58 - 21:58</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان فيزياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان ألماني شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان عربي (نصوص وبلاغة) شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-06</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:53</td><td>12:23 - 13:23</td></tr><tr class="prayer-row"><td>Asr</td><td>16:32</td><td>16:02 - 17:02</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:55</td><td>19:25 - 20:25</td></tr><tr class="prayer-row"><td>Isha</td><td>21:28</td><td>20:58 - 21:58</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان أحياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان عربي شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان إنجليزي شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-07</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:53</td><td>12:23 - 13:23</td></tr><tr class="prayer-row"><td>Asr</td><td>16:32</td><td>16:02 - 17:02</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:55</td><td>19:25 - 20:25</td></tr><tr class="prayer-row"><td>Isha</td><td>21:29</td><td>20:59 - 21:59</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان فيزياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان كيمياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان ألماني شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-08</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:53</td><td>12:23 - 13:23</td></tr><tr class="prayer-row"><td>Asr</td><td>16:32</td><td>16:02 - 17:02</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:56</td><td>19:26 - 20:26</td></tr><tr class="prayer-row"><td>Isha</td><td>21:29</td><td>20:59 - 21:59</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان أحياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان عربي شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان إنجليزي شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-09</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:54</td><td>12:24 - 13:24</td></tr><tr class="prayer-row"><td>Asr</td><td>16:32</td><td>16:02 - 17:02</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:56</td><td>19:26 - 20:26</td></tr><tr class="prayer-row"><td>Isha</td><td>21:29</td><td>20:59 - 21:59</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان فيزياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان كيمياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان ألماني شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-10</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:06</td><td>03:36 - 04:36</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:54</td><td>12:24 - 13:24</td></tr><tr class="prayer-row"><td>Asr</td><td>16:32</td><td>16:02 - 17:02</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:56</td><td>19:26 - 20:26</td></tr><tr class="prayer-row"><td>Isha</td><td>21:30</td><td>21:00 - 22:00</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان أحياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان عربي شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان إنجليزي شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-11</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:54</td><td>12:24 - 13:24</td></tr><tr class="prayer-row"><td>Asr</td><td>16:33</td><td>16:03 - 17:03</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:57</td><td>19:27 - 20:27</td></tr><tr class="prayer-row"><td>Isha</td><td>21:30</td><td>21:00 - 22:00</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان فيزياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان كيمياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان ألماني شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-12</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:54</td><td>12:24 - 13:24</td></tr><tr class="prayer-row"><td>Asr</td><td>16:33</td><td>16:03 - 17:03</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:57</td><td>19:27 - 20:27</td></tr><tr class="prayer-row"><td>Isha</td><td>21:31</td><td>21:01 - 22:01</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان أحياء شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان عربي شامل + تسجيل الأخطاء</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>امتحان إنجليزي شامل</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة كشكول الأخطاء</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-13</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:55</td><td>12:25 - 13:25</td></tr><tr class="prayer-row"><td>Asr</td><td>16:33</td><td>16:03 - 17:03</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:57</td><td>19:27 - 20:27</td></tr><tr class="prayer-row"><td>Isha</td><td>21:31</td><td>21:01 - 22:01</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان شامل (6 أو 7) للمواد العلمية</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان شامل (6 أو 7) للمواد الأدبية واللغات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>قراءة كشكول الأخطاء وحفظ التريكات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة خفيفة</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-14</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:55</td><td>12:25 - 13:25</td></tr><tr class="prayer-row"><td>Asr</td><td>16:33</td><td>16:03 - 17:03</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:58</td><td>19:28 - 20:28</td></tr><tr class="prayer-row"><td>Isha</td><td>21:31</td><td>21:01 - 22:01</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان شامل (6 أو 7) للمواد العلمية</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان شامل (6 أو 7) للمواد الأدبية واللغات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>قراءة كشكول الأخطاء وحفظ التريكات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة خفيفة</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-15</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:55</td><td>12:25 - 13:25</td></tr><tr class="prayer-row"><td>Asr</td><td>16:33</td><td>16:03 - 17:03</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:58</td><td>19:28 - 20:28</td></tr><tr class="prayer-row"><td>Isha</td><td>21:32</td><td>21:02 - 22:02</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان شامل (6 أو 7) للمواد العلمية</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان شامل (6 أو 7) للمواد الأدبية واللغات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>قراءة كشكول الأخطاء وحفظ التريكات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة خفيفة</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-16</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:55</td><td>12:25 - 13:25</td></tr><tr class="prayer-row"><td>Asr</td><td>16:34</td><td>16:04 - 17:04</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:58</td><td>19:28 - 20:28</td></tr><tr class="prayer-row"><td>Isha</td><td>21:32</td><td>21:02 - 22:02</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان شامل (6 أو 7) للمواد العلمية</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان شامل (6 أو 7) للمواد الأدبية واللغات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>قراءة كشكول الأخطاء وحفظ التريكات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة خفيفة</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-17</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:56</td><td>12:26 - 13:26</td></tr><tr class="prayer-row"><td>Asr</td><td>16:34</td><td>16:04 - 17:04</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:59</td><td>19:29 - 20:29</td></tr><tr class="prayer-row"><td>Isha</td><td>21:32</td><td>21:02 - 22:02</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">03:35 AM - 07:30 AM</td><td>امتحان شامل (6 أو 7) للمواد العلمية</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">07:30 AM - 11:25 AM</td><td>امتحان شامل (6 أو 7) للمواد الأدبية واللغات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">04:00 PM - 06:25 PM</td><td>قراءة كشكول الأخطاء وحفظ التريكات</td></tr><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">08:55 PM - 11:00 PM</td><td>مراجعة خفيفة</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-18</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:56</td><td>12:26 - 13:26</td></tr><tr class="prayer-row"><td>Asr</td><td>16:34</td><td>16:04 - 17:04</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:59</td><td>19:29 - 20:29</td></tr><tr class="prayer-row"><td>Isha</td><td>21:33</td><td>21:03 - 22:03</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">09:00 AM - 09:00 PM</td><td>مراجعة التربية الدينية والتربية الوطنية</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-19</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:07</td><td>03:37 - 04:37</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:56</td><td>12:26 - 13:26</td></tr><tr class="prayer-row"><td>Asr</td><td>16:34</td><td>16:04 - 17:04</td></tr><tr class="prayer-row"><td>Maghrib</td><td>19:59</td><td>19:29 - 20:29</td></tr><tr class="prayer-row"><td>Isha</td><td>21:33</td><td>21:03 - 22:03</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">09:00 AM - 09:00 PM</td><td>حل نماذج امتحانات التربية الدينية والوطنية</td></tr></tbody></table></div><div class="day-card"><div class="day-header"><span>🗓️ 2026-06-20</span></div><div class="section-title">🕌 مواقيت الصلاة وفترات الراحة</div><table><thead><tr><th>الصلاة</th><th>الأذان</th><th>فترة التوقف (ممنوع الدراسة)</th></tr></thead><tbody><tr class="prayer-row"><td>Fajr</td><td>04:08</td><td>03:38 - 04:38</td></tr><tr class="prayer-row"><td>Dhuhr</td><td>12:57</td><td>12:27 - 13:27</td></tr><tr class="prayer-row"><td>Asr</td><td>16:35</td><td>16:05 - 17:05</td></tr><tr class="prayer-row"><td>Maghrib</td><td>20:00</td><td>19:30 - 20:30</td></tr><tr class="prayer-row"><td>Isha</td><td>21:34</td><td>21:04 - 22:04</td></tr></tbody></table><div class="section-title">📝 المهام الدراسية</div><table><thead><tr><th class="checkbox-cell">تم؟</th><th>الوقت</th><th>المهمة</th></tr></thead><tbody><tr><td class="checkbox-cell"><input type="checkbox"></td><td class="time-cell">09:00 AM - 09:00 PM</td><td>مراجعة كشكول الأخطاء الشامل وتجهيز الأدوات والنوم مبكراً</td></tr></tbody></table></div>
-        
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">⚡ خطة إنقاذ مكثفة — طلخا، الدقهلية</div>
+  <h1>الأول على الجمهورية</h1>
+  <p class="hero-verse">"وَأَن لَّيْسَ لِلْإِنسَانِ إِلَّا مَا سَعَىٰ"</p>
+  <div class="progress-wrap">
+    <div class="progress-top">
+      <span class="progress-label">إجمالي التاسكات المنجزة</span>
+      <span class="progress-count" id="prog-count">0 / 0</span>
     </div>
-    <script>
-        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-            cb.addEventListener('change', function() {
-                const taskText = this.parentElement.nextElementSibling.nextElementSibling;
-                if (this.checked) {
-                    taskText.classList.add('task-done');
-                } else {
-                    taskText.classList.remove('task-done');
-                }
-            });
-        });
-    </script>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container" id="app"></div>
+
+<button class="reset-btn" onclick="resetAll()">↺ إعادة تعيين الكل</button>
+
+<script>
+// ══════════════════════════════════════════════════════
+//  DATA
+// ══════════════════════════════════════════════════════
+
+// Prayer times per day (from timesprayer.today — Daqahlia / Talkha)
+// Format: [Fajr, Dhuhr, Asr, Maghrib, Isha] as "HH:MM"
+// Block = 30min before athan → 30min after athan
+const PRAYERS = {
+  "29-05": ["04:07","12:51","16:30","19:52","21:24"],
+  "30-05": ["04:06","12:52","16:31","19:52","21:25"],
+  "31-05": ["04:06","12:52","16:31","19:53","21:26"],
+  "01-06": ["04:05","12:52","16:30","19:53","21:26"],
+  "02-06": ["04:05","12:52","16:31","19:54","21:27"],
+  "03-06": ["04:04","12:52","16:31","19:54","21:28"],
+  "04-06": ["04:04","12:52","16:31","19:55","21:28"],
+  "05-06": ["04:04","12:53","16:31","19:55","21:29"],
+  "06-06": ["04:03","12:53","16:31","19:56","21:30"],
+  "07-06": ["04:03","12:53","16:31","19:56","21:30"],
+  "08-06": ["04:03","12:53","16:31","19:57","21:31"],
+  "09-06": ["04:02","12:53","16:32","19:57","21:32"],
+  "10-06": ["04:02","12:54","16:32","19:58","21:32"],
+  "11-06": ["04:02","12:54","16:32","19:58","21:33"],
+  "12-06": ["04:02","12:54","16:32","19:58","21:33"],
+  "13-06": ["04:02","12:54","16:32","19:59","21:34"],
+  "14-06": ["04:02","12:54","16:33","19:59","21:34"],
+  "15-06": ["04:02","12:55","16:33","20:00","21:34"],
+  "16-06": ["04:02","12:55","16:33","20:00","21:35"],
+  "17-06": ["04:02","12:55","16:33","20:00","21:35"],
+  "18-06": ["04:02","12:55","16:33","20:00","21:35"],
+  "19-06": ["04:02","12:55","16:34","20:01","21:36"],
+  "20-06": ["04:02","12:56","16:34","20:01","21:36"],
+};
+
+const PRAYER_NAMES = ["الفجر","الظهر","العصر","المغرب","العشاء"];
+
+function prayerBlock(key) {
+  const times = PRAYERS[key];
+  if (!times) return [];
+  return times.map((t, i) => {
+    const [h, m] = t.split(":").map(Number);
+    const start = h * 60 + m - 30;
+    const end   = h * 60 + m + 30;
+    const fmt = min => {
+      const hh = Math.floor(Math.abs(min)/60) % 24;
+      const mm = Math.abs(min) % 60;
+      const ampm = hh < 12 ? 'ص' : 'م';
+      const hh12 = hh === 0 ? 12 : hh > 12 ? hh - 12 : hh;
+      return `${hh12}:${String(mm).padStart(2,'0')} ${ampm}`;
+    };
+    return {
+      isPrayer: true,
+      time: `${fmt(start)} — ${fmt(end)}`,
+      title: `🕌 بلوك صلاة ${PRAYER_NAMES[i]} (${t})`,
+      sub: "وضوء، صلاة، ذكر — لا دراسة خلال هذه الفترة",
+      tag: "prayer"
+    };
+  });
+}
+
+// Subject tag helper
+const TAG = {
+  physics:   "physics",
+  chemistry: "chemistry",
+  bio:       "bio",
+  arabic:    "arabic",
+  german:    "german",
+  english:   "english",
+  review:    "review",
+  religion:  "religion",
+  prayer:    "prayer",
+};
+
+// ── STUDY SESSIONS (tasks only, prayers injected per-day) ──
+const DAYS = [
+// ──────────────────────────────────────────────────────────
+// PHASE 1
+// ──────────────────────────────────────────────────────────
+{
+  key: "29-05", label: "الجمعة", date: "٢٩ مايو", phase: 1,
+  color: "#3b82f6",
+  note: "يبدأ من العصر فقط",
+  tasks: [
+    { time:"04:00م — 06:25م", title:"فيزياء — الفصل الثاني", sub:"قراءة قوانين أجهزة القياس وحل ٤٠ سؤالاً مباشرة", tag: TAG.physics },
+    { time:"07:25م — 07:55م", title:"فيزياء — استكمال وتصحيح الأخطاء", sub:"راجع الأسئلة اللي غلطت فيها وسجّلها في كشكول الأخطاء", tag: TAG.physics },
+    { time:"08:55م — 11:00م", title:"كيمياء — الباب الأول ونصف الثاني", sub:"قراءة سريعة لخواص الانتقالية + بداية مخطط كواشف الباب الثاني", tag: TAG.chemistry },
+  ]
+},
+{
+  key: "30-05", label: "السبت", date: "٣٠ مايو", phase: 1,
+  color: "#3b82f6",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"فيزياء — الفصل الثالث", sub:"قراءة قوانين الدينامو والمحوّل + القفز للحل مباشرة", tag: TAG.physics },
+    { time:"07:30ص — 11:25ص", title:"كيمياء — باقي الباب الثاني", sub:"استكمال مخطط الألوان والرواسب + حل ٢٠ مسألة", tag: TAG.chemistry },
+    { time:"04:00م — 06:25م", title:"أحياء — المناعة", sub:"قراءة سريعة للمناعة + حل أسئلة الربط", tag: TAG.bio },
+    { time:"08:55م — 11:00م", title:"عربي — النحو", sub:"النواسخ والمنصوبات + حل ٢٠ جملة تدريبية", tag: TAG.arabic },
+  ]
+},
+{
+  key: "31-05", label: "الأحد", date: "٣١ مايو", phase: 1,
+  color: "#3b82f6",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"فيزياء — الفصل الرابع", sub:"دوائر التيار المتردد — قراءة + حل", tag: TAG.physics },
+    { time:"07:30ص — 11:25ص", title:"كيمياء — الباب الثالث", sub:"الاتزان الكيميائي ومسائل الـ pH", tag: TAG.chemistry },
+    { time:"04:00م — 06:25م", title:"أحياء — الـ RNA والـ DNA", sub:"قراءة بتركيز + حل مباشر", tag: TAG.bio },
+    { time:"08:55م — 11:00م", title:"عربي — قواعد الأساليب المتبقية", sub:"قراءة + حل شامل نحو", tag: TAG.arabic },
+  ]
+},
+{
+  key: "01-06", label: "الاثنين", date: "١ يونيو", phase: 1,
+  color: "#3b82f6",
+  tasks: [
+    { time:"03:35ص — 11:25ص", title:"كيمياء — الباب الرابع: الكهربية", sub:"الخلايا الكهروكيميائية + قوانين فاراداي — قراءة وحل", tag: TAG.chemistry },
+    { time:"04:00م — 06:25م", title:"مراجعة أخطاء الفيزياء", sub:"ارجع لكشكول الأخطاء وراجع كل الأخطاء اللي تراكمت الأيام الماضية", tag: TAG.review },
+    { time:"08:55م — 11:00م", title:"عربي — الأدب", sub:"المدارس الشعرية — قراءة وحفظ المحطات الأساسية", tag: TAG.arabic },
+  ]
+},
+{
+  key: "02-06", label: "الثلاثاء", date: "٢ يونيو", phase: 1,
+  color: "#f5c842",
+  note: "🇩🇪 يوم الألماني العظيم",
+  tasks: [
+    { time:"03:35ص — 11:25ص", title:"ألماني — ملخصات A1 كاملة", sub:"مشاهدة ملخصات A1 + حفظ الكلمات + تدوين القواعد", tag: TAG.german },
+    { time:"04:00م — 06:25م", title:"ألماني — حل امتحانات سابقة", sub:"حل ٣ امتحانات ألماني سابقة كاملة مع تصحيح الأخطاء", tag: TAG.german },
+    { time:"08:55م — 11:00م", title:"إنجليزي — مراجعة سريعة", sub:"حل قطع فهم + مراجعة القواعد الأساسية", tag: TAG.english },
+  ]
+},
+// ──────────────────────────────────────────────────────────
+// PHASE 2
+// ──────────────────────────────────────────────────────────
+{
+  key: "03-06", label: "الأربعاء", date: "٣ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان فيزياء شامل (١)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء في كشكول مخصص", tag: TAG.physics },
+    { time:"07:30ص — 11:25ص", title:"امتحان كيمياء شامل (١)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.chemistry },
+    { time:"04:00م — 06:25م", title:"امتحان ألماني شامل (١)", sub:"حل نموذج كامل تحت ظروف الامتحان الحقيقية", tag: TAG.german },
+    { time:"08:55م — 11:00م", title:"مراجعة كشكول الأخطاء", sub:"فيزياء + كيمياء — ركّز على الأخطاء المتكررة", tag: TAG.review },
+  ]
+},
+{
+  key: "04-06", label: "الخميس", date: "٤ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان أحياء شامل (١)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.bio },
+    { time:"07:30ص — 11:25ص", title:"امتحان عربي شامل (١)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.arabic },
+    { time:"04:00م — 06:25م", title:"امتحان إنجليزي شامل (١)", sub:"حل نموذج كامل", tag: TAG.english },
+    { time:"08:55م — 11:00م", title:"مراجعة كشكول الأخطاء", sub:"أحياء + عربي + إنجليزي", tag: TAG.review },
+  ]
+},
+{
+  key: "05-06", label: "الجمعة", date: "٥ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان فيزياء شامل (٢)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.physics },
+    { time:"04:00م — 06:25م", title:"امتحان ألماني شامل (٢)", sub:"حل نموذج كامل", tag: TAG.german },
+    { time:"08:55م — 11:00م", title:"عربي — نصوص وبلاغة", sub:"حل تدريبات النصوص والبلاغة", tag: TAG.arabic },
+  ]
+},
+{
+  key: "06-06", label: "السبت", date: "٦ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان أحياء شامل (٢)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.bio },
+    { time:"07:30ص — 11:25ص", title:"امتحان عربي شامل (٢)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.arabic },
+    { time:"04:00م — 06:25م", title:"امتحان إنجليزي شامل (٢)", sub:"حل نموذج كامل", tag: TAG.english },
+    { time:"08:55م — 11:00م", title:"مراجعة كشكول الأخطاء الشامل", sub:"كل المواد", tag: TAG.review },
+  ]
+},
+{
+  key: "07-06", label: "الأحد", date: "٧ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان فيزياء شامل (٣)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.physics },
+    { time:"07:30ص — 11:25ص", title:"امتحان كيمياء شامل (٣)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.chemistry },
+    { time:"04:00م — 06:25م", title:"امتحان ألماني شامل (٣)", sub:"حل نموذج كامل", tag: TAG.german },
+    { time:"08:55م — 11:00م", title:"كيمياء — استكمال النواقص", sub:"ارجع لأي نقطة ضعف في الكيمياء من كشكول الأخطاء", tag: TAG.chemistry },
+  ]
+},
+{
+  key: "08-06", label: "الاثنين", date: "٨ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان أحياء شامل (٣)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.bio },
+    { time:"07:30ص — 11:25ص", title:"امتحان عربي شامل (٣)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.arabic },
+    { time:"04:00م — 06:25م", title:"امتحان إنجليزي شامل (٣)", sub:"حل نموذج كامل", tag: TAG.english },
+    { time:"08:55م — 11:00م", title:"مراجعة كشكول الأخطاء", sub:"ركّز على الأخطاء المتكررة في كل المواد", tag: TAG.review },
+  ]
+},
+{
+  key: "09-06", label: "الثلاثاء", date: "٩ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان فيزياء شامل (٤)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.physics },
+    { time:"07:30ص — 11:25ص", title:"امتحان كيمياء شامل (٤)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.chemistry },
+    { time:"04:00م — 06:25م", title:"امتحان ألماني شامل (٤)", sub:"حل نموذج كامل", tag: TAG.german },
+    { time:"08:55م — 11:00م", title:"ألماني — مراجعة القواعد", sub:"مراجعة سريعة لكل قواعد A1 الأساسية", tag: TAG.german },
+  ]
+},
+{
+  key: "10-06", label: "الأربعاء", date: "١٠ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان أحياء شامل (٤)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.bio },
+    { time:"07:30ص — 11:25ص", title:"امتحان عربي شامل (٤)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.arabic },
+    { time:"04:00م — 06:25م", title:"امتحان إنجليزي شامل (٤)", sub:"حل نموذج كامل", tag: TAG.english },
+  ]
+},
+{
+  key: "11-06", label: "الخميس", date: "١١ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان فيزياء شامل (٥)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.physics },
+    { time:"07:30ص — 11:25ص", title:"امتحان كيمياء شامل (٥)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.chemistry },
+    { time:"04:00م — 06:25م", title:"امتحان ألماني شامل (٥)", sub:"حل نموذج كامل", tag: TAG.german },
+    { time:"08:55م — 11:00م", title:"عربي — تعبير + مراجعة", sub:"حل تعبير + مراجعة سريعة لكل محاور العربي", tag: TAG.arabic },
+  ]
+},
+{
+  key: "12-06", label: "الجمعة", date: "١٢ يونيو", phase: 2,
+  color: "#f97316",
+  tasks: [
+    { time:"03:35ص — 07:30ص", title:"امتحان أحياء شامل (٥)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.bio },
+    { time:"07:30ص — 11:25ص", title:"امتحان عربي شامل (٥)", sub:"حل الامتحان بالكامل + تسجيل الأخطاء", tag: TAG.arabic },
+    { time:"04:00م — 06:25م", title:"امتحان إنجليزي شامل (٥)", sub:"حل نموذج كامل", tag: TAG.english },
+    { time:"08:55م — 11:00م", title:"مراجعة كشكول الأخطاء الشامل", sub:"الجلسة الأخيرة قبل أيام التثبيت — ركّز على التريكات", tag: TAG.review },
+  ]
+},
+// ──────────────────────────────────────────────────────────
+// PHASE 3
+// ──────────────────────────────────────────────────────────
+{
+  key: "18-06", label: "الخميس", date: "١٨ يونيو", phase: 3,
+  color: "#a855f7",
+  tasks: [
+    { time:"طوال اليوم", title:"تربية دينية + تربية وطنية", sub:"قراءة سريعة للملخصات — لا تضيع وقتاً طويلاً هنا", tag: TAG.religion },
+  ]
+},
+{
+  key: "19-06", label: "الجمعة", date: "١٩ يونيو", phase: 3,
+  color: "#a855f7",
+  tasks: [
+    { time:"طوال اليوم", title:"حل نماذج التربية الدينية والوطنية", sub:"لضمان النجاح براحة في هذه المادة", tag: TAG.religion },
+  ]
+},
+{
+  key: "20-06", label: "السبت", date: "٢٠ يونيو", phase: 3,
+  color: "#a855f7",
+  note: "🌙 ليلة الامتحان الأول — ٢١ يونيو صباحاً",
+  tasks: [
+    { time:"الصبح", title:"مراجعة كشكول الأخطاء الشامل", sub:"لا تدرس شيئاً جديداً — فقط راجع ما حفظته", tag: TAG.review },
+    { time:"بعد الظهر", title:"تجهيز أدوات الامتحان", sub:"أقلام، بطاقة شخصية، ملابس — جهّز كل شيء مسبقاً", tag: TAG.review },
+    { time:"8:55م", title:"نَم مبكراً جداً 😴", sub:"النوم الكافي = ذاكرة أحدّ + تركيز أقوى غداً", tag: TAG.review },
+  ]
+},
+];
+
+// Golden days (13-17 Jun) are rendered as a special block
+const GOLDEN_DAYS = {
+  start: "١٣ يونيو", end: "١٧ يونيو",
+  label: "أيام التثبيت الذهبية",
+  desc: `يستمر بنفس روتين المرحلة الثانية: يوم للامتحان السادس والسابع للمواد العلمية (فيزياء + كيمياء + ألماني)، واليوم الذي يليه للامتحان السادس والسابع للمواد الأدبية واللغات (أحياء + عربي + إنجليزي). التركيز الأكبر هنا على قراءة كشكول الأخطاء وحفظ التريكات التي أخطأت فيها.`
+};
+
+const PHASE_LABELS = {
+  1: { text:"المرحلة الأولى — سد الثغرات بطريقة القراءة ثم الحل المباشر", cls:"phase-1" },
+  2: { text:"المرحلة الثانية — طاحونة الحل الشامل المتدرج (امتحانان يومياً)", cls:"phase-2" },
+  3: { text:"المرحلة الثالثة — العزل النهائي والاستعداد", cls:"phase-3" },
+};
+
+const TAG_LABELS = {
+  physics:"فيزياء", chemistry:"كيمياء", bio:"أحياء",
+  arabic:"عربي", german:"ألماني", english:"إنجليزي",
+  review:"مراجعة", religion:"تربية", prayer:"صلاة"
+};
+
+// ══════════════════════════════════════════════════════
+//  STATE (localStorage for persistence when opened locally)
+// ══════════════════════════════════════════════════════
+const STORE_KEY = "studyplan_v1";
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch { return {}; }
+}
+
+function saveState(s) {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(s)); }
+  catch {}
+}
+
+let state = loadState(); // { "29-05_0": true, "29-05_1": false, ... }
+
+function taskKey(dayKey, idx) { return `${dayKey}_${idx}`; }
+
+function isChecked(dayKey, idx) { return !!state[taskKey(dayKey, idx)]; }
+
+function toggle(dayKey, idx) {
+  const k = taskKey(dayKey, idx);
+  state[k] = !state[k];
+  saveState(state);
+  render();
+}
+
+function resetAll() {
+  if (confirm("هتمسح كل التيكات؟")) { state = {}; saveState(state); render(); }
+}
+
+// ══════════════════════════════════════════════════════
+//  RENDER
+// ══════════════════════════════════════════════════════
+function render() {
+  const app = document.getElementById('app');
+  let html = '';
+  let totalTasks = 0, doneTasks = 0;
+  let lastPhase = 0;
+
+  DAYS.forEach((day, di) => {
+    // Phase label
+    if (day.phase !== lastPhase) {
+      html += `<div class="phase-label ${PHASE_LABELS[day.phase].cls}">
+        <div class="phase-dot"></div>
+        ${PHASE_LABELS[day.phase].text}
+      </div>`;
+      lastPhase = day.phase;
+      // Insert golden days block before phase 3
+      if (day.phase === 3) {
+        html += `<div class="golden-block">
+          <h3>✨ ${GOLDEN_DAYS.label} — ${GOLDEN_DAYS.start} → ${GOLDEN_DAYS.end}</h3>
+          <p>${GOLDEN_DAYS.desc}</p>
+        </div>`;
+      }
+    }
+
+    // Count tasks for this day
+    const nTasks = day.tasks.length;
+    const nDone  = day.tasks.filter((_, i) => isChecked(day.key, i)).length;
+    totalTasks += nTasks; doneTasks += nDone;
+    const dayDone = nDone === nTasks;
+
+    // Prayer times
+    const prayers = prayerBlock(day.key);
+    const prayerHTML = prayers.map(p => `
+      <div class="prayer-chip">
+        <span class="prayer-chip-name">${p.title.replace('🕌 بلوك صلاة ','').split(' (')[0]}</span>
+        <span>${p.time.split(' — ')[0]}</span>
+      </div>`).join('');
+
+    // Build sessions (tasks interspersed with prayer blocks in time order)
+    // For simplicity, show prayers as info bar, tasks as checkboxes
+    const tasksHTML = day.tasks.map((t, i) => {
+      const checked = isChecked(day.key, i);
+      return `<div class="session ${checked?'checked':''}" onclick="toggle('${day.key}',${i})">
+        <div class="check-box">
+          <svg class="check-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="session-content">
+          <div class="session-time">${t.time}</div>
+          <div class="session-title">${t.title}</div>
+          <div class="session-sub">${t.sub}</div>
+          <span class="subj-tag tag-${t.tag}">${TAG_LABELS[t.tag]}</span>
+        </div>
+      </div>`;
+    }).join('');
+
+    const isOpen = !dayDone; // auto-open incomplete days initially (overridden by toggle)
+
+    html += `<div class="day-card ${dayDone?'done':''}" id="day-${day.key}">
+      <div class="day-header" onclick="toggleDay('${day.key}')">
+        <div class="day-header-right">
+          <div class="day-num" style="background:${day.color}22;color:${day.color}">${di+1}</div>
+          <div class="day-info">
+            <div class="day-name">${day.label} — ${day.date}${day.note? ' <span style="color:var(--gold);font-size:12px">'+day.note+'</span>':''}</div>
+            <div class="day-date">مواقيت الصلاة: ${PRAYER_NAMES.map((n,i)=>`${n} ${PRAYERS[day.key]?.[i]||''}`).join(' • ')}</div>
+          </div>
+        </div>
+        <div class="day-header-left">
+          <span class="day-progress-mini">${nDone}/${nTasks}</span>
+          <div class="day-done-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+            مكتمل
+          </div>
+          <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+      <div class="day-body">
+        <div class="prayers-bar">
+          <span style="font-size:12px;color:var(--text-dim);font-weight:600;align-self:center">🕌 مواقيت الصلاة (محجوزة):</span>
+          ${prayerHTML}
+        </div>
+        ${tasksHTML}
+      </div>
+    </div>`;
+  });
+
+  // Final night card
+  html += `<div class="final-night">
+    <h2>🌙 الامتحانات تبدأ ٢١ يونيو — أنت جاهز!</h2>
+    <p>كل ما فعلته خلال هذه الأيام سيُحاسَب عليه يوم القيامة بالنية الطيبة — استمر ولا تُفرّط في ساعة.</p>
+  </div>`;
+
+  app.innerHTML = html;
+
+  // Restore open/close state
+  DAYS.forEach(day => {
+    const card = document.getElementById(`day-${day.key}`);
+    if (!card) return;
+    const open = openDays[day.key];
+    if (open === undefined) {
+      // default: open if not done
+      const nDone = day.tasks.filter((_,i) => isChecked(day.key,i)).length;
+      if (nDone < day.tasks.length) card.classList.add('open');
+    } else if (open) {
+      card.classList.add('open');
+    }
+  });
+
+  // Update progress
+  const pct = totalTasks > 0 ? Math.round(doneTasks/totalTasks*100) : 0;
+  document.getElementById('prog-count').textContent = `${doneTasks} / ${totalTasks}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+// Track which days are open
+const openDays = {};
+
+function toggleDay(key) {
+  const card = document.getElementById(`day-${key}`);
+  if (!card) return;
+  const isOpen = card.classList.toggle('open');
+  openDays[key] = isOpen;
+}
+
+// Initial render
+render();
+</script>
 </body>
 </html>
-    
